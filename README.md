@@ -8,3 +8,7 @@
 # Vim
 
 - https://github.com/neoclide/coc.nvim
+
+# Goenv
+
+- https://github.com/go-nv/goenv/blob/master/INSTALL.md
