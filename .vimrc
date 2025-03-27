@@ -24,3 +24,13 @@ inoremap <silent><expr> <Tab>
       \ coc#pum#visible() ? coc#pum#next(1) :
       \ CheckBackspace() ? "\<Tab>" :
       \ coc#refresh()
+
+" go
+let g:ale_linters = {
+\   'go': ['staticcheck']
+\}
+let g:ale_fixers = {
+\   'go': ['gofmt', 'goimports']
+\}
+let g:ale_go_golangci_lint_options = '--enable-all'
+
