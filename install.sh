@@ -7,7 +7,7 @@ vim +'PlugInstall --sync' +qa
 
 cp .vimrc ~/.vimrc
 
-cat <<EOF > ~/.vim/coc-setting.json
+cat <<EOF > ~/.vim/coc-settings.json
 {
 	"languageserver": {
 		"terraform": {
@@ -21,7 +21,18 @@ cat <<EOF > ~/.vim/coc-setting.json
 			"settings": {}
 		}
 	}
+  "go.goplsOptions": {
+    "staticcheck": true
+  },
+  "go.lintTool": "golangci-lint",
+  "go.lintFlags": ["--enable=unused,govet"],
+  "go.formatTool": "goimports",
+  "go.usePlaceholders": true,
+  "go.autoBuild": "on",
+  "go.diagnosticsDelay": "500ms",
+  "go.inlayHint.enable": true
 }
+
 EOF
 
 # Global linters
