@@ -27,3 +27,4 @@ EOF
 # Global linters
 
 pip3 install pylint ruff mymy pyright
+# go install honnef.co/go/tools/cmd/staticcheck@latest
