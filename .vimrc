@@ -25,6 +25,11 @@ inoremap <silent><expr> <Tab>
       \ CheckBackspace() ? "\<Tab>" :
       \ coc#refresh()
 
+inoremap <silent><expr> <TAB>
+  \ pumvisible() ? coc#_select_confirm() :
+  \ CheckBackspace() ? "\<TAB>" :
+  \ coc#refresh()
+
 " go
 let g:ale_linters = {
 \   'go': ['staticcheck']
