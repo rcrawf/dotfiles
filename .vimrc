@@ -1,23 +1,65 @@
-" add yaml stuffs
-au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml 
-autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+" =========================
+" Filetypes & indentation
+" =========================
+
+augroup yaml_settings
+  autocmd!
+  autocmd BufNewFile,BufRead *.yml,*.yaml setlocal filetype=yaml
+  autocmd FileType yaml setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
+augroup END
 
 
-call plug#begin()
+" =========================
+" Plugins
+" =========================
 
-Plug 'sheerun/vim-polyglot'
+call plug#begin('~/.vim/plugged')
+
 Plug 'dense-analysis/ale'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 call plug#end()
 
+
+" =========================
+" ALE – linting only
+" =========================
+
+" Never use ALE for completion
+let g:ale_completion_enabled = 0
+
+" Don’t auto-detect virtualenvs
 let g:ale_virtualenv_dir_names = []
+
+" Run linters as you type
+let g:ale_lint_on_text_changed = 'normal'
+let g:ale_lint_on_insert_leave = 1
+
+" ---- Python: ONE linter ----
+let g:ale_linters = {
+\   'python': ['flake8'],
+\   'go': ['staticcheck'],
+\}
+
 let g:ale_python_flake8_options = '--max-line-length=120'
 
-" use <tab> to trigger completion and navigate to the next complete item
+" ---- Fixers ----
+let g:ale_fixers = {
+\   'python': ['black'],
+\   'go': ['gofmt', 'goimports'],
+\}
+
+let g:ale_fix_on_save = 1
+
+
+" =========================
+" coc.nvim – completion / LSP
+" =========================
+
+" Use Tab for completion navigation
 function! CheckBackspace() abort
   let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
+  return col <= 0 || getline('.')[col - 1] =~# '\s'
 endfunction
 
 inoremap <silent><expr> <Tab>
@@ -25,17 +67,17 @@ inoremap <silent><expr> <Tab>
       \ CheckBackspace() ? "\<Tab>" :
       \ coc#refresh()
 
-inoremap <silent><expr> <TAB>
-  \ pumvisible() ? coc#_select_confirm() :
-  \ CheckBackspace() ? "\<TAB>" :
-  \ coc#refresh()
+inoremap <silent><expr> <S-Tab>
+      \ coc#pum#visible() ? coc#pum#prev(1) :
+      \ "\<C-h>"
 
-" go
-let g:ale_linters = {
-\   'go': ['staticcheck']
-\}
-let g:ale_fixers = {
-\   'go': ['gofmt', 'goimports']
-\}
+inoremap <silent><expr> <CR>
+      \ coc#pum#visible() ? coc#pum#confirm() :
+      \ "\<CR>"
+
+
+" =========================
+" Go
+" =========================
+
 let g:ale_go_golangci_lint_options = '--enable-all'
-
